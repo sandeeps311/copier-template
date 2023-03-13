@@ -1,0 +1,101 @@
+site_name: "{{ project_name }}"
+site_description: "{{ project_description }}"
+site_url: "https://{{ repository_namespace }}.{{ repository_provider.rsplit('.', 1)[0] }}.io/{{ repository_name }}"
+repo_url: "https://{{ repository_provider }}/{{ repository_namespace }}/{{ repository_name }}"
+repo_name: "{{ repository_namespace }}/{{ repository_name }}"
+site_dir: "{% if repository_provider == 'gitlab.com' %}public{% elif repository_provider == 'github.com' %}site{% endif %}"
+watch: [README.md, CONTRIBUTING.md, CHANGELOG.md, src/{{ python_package_import_name }}]
+
+nav:
+- Home:
+  - Overview: index.md
+  - Changelog: changelog.md
+  - Credits: credits.md
+  - License: license.md
+# defer to gen-files + literate-nav
+- Code Reference: reference/
+- Development:
+  - Contributing: contributing.md
+  - Code of Conduct: code_of_conduct.md
+  - Coverage report: coverage.md
+{%- if author_username == "pawamoy" %}
+- Author's website: https://{{ author_username }}.{{ repository_provider.rsplit('.', 1)[0] }}.io/
+{%- endif %}
+
+theme:
+  name: material
+  {%- if author_username == "pawamoy" %}
+  icon:
+    logo: material/currency-sign
+  {%- endif %}
+  features:
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.top
+  - search.highlight
+  - search.suggest
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: teal
+    accent: purple
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: lime
+    toggle:
+      icon: material/weather-night
+      name: Switch to light mode
+
+extra_css:
+- css/material.css
+- css/mkdocstrings.css
+
+markdown_extensions:
+- admonition
+- callouts
+- pymdownx.emoji
+- pymdownx.magiclink
+- pymdownx.snippets:
+    check_paths: true
+- pymdownx.superfences
+- pymdownx.tabbed:
+    alternate_style: true
+- pymdownx.tasklist
+- toc:
+    permalink: {% if author_username == "pawamoy" %}"¤"{% else %}true{% endif %}
+
+plugins:
+- search
+- markdown-exec
+- gen-files:
+    scripts:
+    - scripts/gen_ref_nav.py
+- literate-nav:
+    nav_file: SUMMARY.txt
+- coverage
+- section-index
+- mkdocstrings:
+    handlers:
+      python:
+        import:
+        - https://docs.python.org/3/objects.inv
+        options:
+          separate_signature: true
+          merge_init_into_class: true
+          docstring_options:
+            ignore_init_summary: true
+
+extra:
+  social:
+  - icon: fontawesome/brands/{{ repository_provider.rsplit(".", 1)[0] }}
+    link: https://{{ repository_provider }}/{{ author_username }}
+  {%- if author_username == "pawamoy" %}
+  - icon: fontawesome/brands/mastodon
+    link: https://fosstodon.org/@{{ author_username }}
+  - icon: fontawesome/brands/twitter
+    link: https://twitter.com/{{ author_username }}
+  {%- endif %}
