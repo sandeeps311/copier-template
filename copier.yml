@@ -122,3 +122,9 @@ use_precommit:
   type: bool
   help: Do you want to use pre-commit?
   default: no
+
+
+# SUBPROJECTS ----------------------------
+subprojects:
+  - repo: https://github.com/sandeeps311/copier_minimal_example/tree/main/project
+    path: project
