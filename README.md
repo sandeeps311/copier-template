@@ -1,4 +1,4 @@
-# Copier PDM
+# Copier Common Template
 
 [Copier](https://github.com/copier-org/copier) template
 for Python projects managed by [PDM](https://github.com/pdm-project/pdm).
